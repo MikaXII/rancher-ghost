@@ -1,2 +1,4 @@
 # rancher-ghost
-ghost-blog for rancher
+ghost-blog for rancher (HA)
+
+##WIP
