@@ -1,23 +1,19 @@
-FROM mhart/alpine-node:6.0
+FROM ghost:0.11.2
 MAINTAINER MikaXII <mikaxii@recalbox.com>
 
-ENV GHOST_VERSION=
-ENV GHOST_IP=127.0.0.1
-ENV GHOST_PORT=2368
-ENV GHOST_DB=mysql
-ENV GHOST_HOST=mysql_host
-ENV GHOST_DB_USER=ghost
-ENV GHOST_DB_PASS=somepassword
-ENV GHOST_DB_NAME=ghost_db
+ENV GHOST_URL="http://localhost"
+ENV DB_HOST="127.0.0.1"
+ENV DB_USER="user"
+ENV DB_PASSWD="passwd"
+ENV DB_NAME="db_name"
+ENV IP_LISTEN="0.0.0.0"
+ENV PORT_LISTEN="2368"
 
-# Keep while package is alpha
-RUN apk add --no-cache git 
-RUN npm install -g   https://github.com/MikaXII/Ghost-CLI #ghost-cli lodash.foreach
+RUN apt-get update && apt-get install -y \
+        gettext \
+ && rm -rf /var/lib/apt/lists/*
 
+ADD ./config.js.tmpl ./
+ADD ./start.sh /bin/
 
-RUN adduser ghost -h /home/ghost -s /bin/bash -D
-USER ghost
-WORKDIR /home/ghost
-RUN ghost install -d blog --ip ${GHOST_IP} --port ${GHOST_PORT} --db ${GHOST_DB} \
-        --dbhost ${GHOST_HOST} --dbuser ${GHOST_DB_USER} --dbpass ${GHOST_DB_PASS} \
-        --dbname ${GHOST_DB_NAME} ${GHOST_VERSION}
+CMD ["start.sh"]
