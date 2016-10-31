@@ -16,4 +16,9 @@ RUN apt-get update && apt-get install -y \
 ADD ./config.js.tmpl ./
 ADD ./start.sh /bin/
 
+VOLUME /usr/src/ghost/content/data
+VOLUME /usr/src/ghost/content/apps
+VOLUME /usr/src/ghost/content/images
+#VOLUME /usr/src/ghost/content/themes
+
 CMD ["start.sh"]
